@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('user_security_adjustments', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            $table->boolean('two_factor_enabled')->default(false);
+            $table->boolean('email_notifications')->default(true);
+            $table->boolean('login_alerts')->default(true);
+            $table->boolean('allow_password_reset')->default(true);
+            $table->boolean('suspicious_login_protection')->default(true);
+            $table->string('backup_email')->nullable();
+            $table->ipAddress('trusted_ip')->nullable();
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('user_security_adjustments');
+    }
+};
